@@ -1,6 +1,6 @@
 {
   "name": "@codehz/telegram-mini-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "My helper libraries for build telegram mini app",
   "keywords": [
