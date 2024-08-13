@@ -1,8 +1,8 @@
+import { useTelegramColorScheme } from "+hooks/useTelegramTheme";
 import { makeClass } from "bun-tailwindcss" with { type: "macro" };
 import classNames from "classnames";
 import { memo } from "react";
 import { Toaster } from "sonner";
-import { useTelegramColorScheme } from "../hooks/useTelegramTheme";
 
 export const ThemeAwaredToaster = memo(() => {
   const scheme = useTelegramColorScheme();
