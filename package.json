@@ -1,0 +1,41 @@
+{
+  "name": "@codehz/telegram-mini-app",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "My helper libraries for build telegram mini app",
+  "keywords": [
+    "bun",
+    "tailwindcss",
+    "telegram"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/telegram-web-app": "^7.8.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6"
+  },
+  "peerDependencies": {
+    "@ark-ui/react": "^3.7.0",
+    "classnames": "^2.5.1",
+    "nanoid": "^5.0.7",
+    "sonner": "^1.5.0",
+    "typescript": "^5.0.0",
+    "use-debounce": "^10.0.2"
+  },
+  "dependencies": {
+    "bun-tailwindcss": "^0.0.6",
+    "tailwindcss": "=4.0.0-alpha.19"
+  },
+  "resolutions": {
+    "tailwindcss": "=4.0.0-alpha.19"
+  },
+  "files": [
+    "components/*",
+    "hooks/*",
+    "utils/*",
+    "*.ts",
+    "*.css"
+  ]
+}

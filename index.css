@@ -1,0 +1,129 @@
+@import "tailwindcss/preflight.css";
+@import "tailwindcss/theme.css";
+
+@theme {
+  --color-divide: #00000010;
+  --color-accent-text: var(--tg-theme-accent-text-color, #2481cc);
+  --color-bg: var(--tg-theme-bg-color, #ffffff);
+  --color-secondary-bg: var(--tg-theme-secondary-bg-color, #efeff3);
+  --color-hint: var(--tg-theme-hint-color, #999999);
+  --color-link: var(--tg-theme-link-color, #2481cc);
+  --color-section-header-text: var(--tg-theme-section-header-text-color, #6d6d71);
+  --color-button: var(--tg-theme-button-color, #2481cc);
+  --color-header-bg: var(--tg-theme-header-bg-color, #efeff3);
+  --color-section-bg: var(--tg-theme-section-bg-color, #ffffff);
+  --color-text: var(--tg-theme-text-color, #000000);
+  --color-subtitle-text: var(--tg-theme-subtitle-text-color, #999999);
+  --color-button-text: var(--tg-theme-button-text-color, #ffffff);
+  --color-destructive-text: var(--tg-theme-destructive-text-color, #ff3b30);
+
+  --animate-appear: appear 0.2s ease-in-out;
+  --animate-disappear: disappear 0.2s ease-in-out forwards;
+  --animate-reveal: reveal 0.3s cubic-bezier(0.35, 1, 1, 0.25);
+  --animate-unreveal: unreveal 0.3s cubic-bezier(0.5, 0, 0.7, 0.5) forwards;
+  --animate-reveal-mask: disappear 0.3s forwards;
+  --animate-unreveal-backdrop: disappear 0.3s cubic-bezier(0.7, 0, 1, 0.5) forwards;
+
+  --animate-bottom-sheet-appear: bottom-sheet-appear 0.2s ease-out;
+  --animate-bottom-sheet-disappear: bottom-sheet-disappear 0.2s ease-in forwards;
+
+  --animate-jump-from-bottom: jump-from-bottom 0.2s ease-out;
+  --animate-list-item-appear: list-item-appear 0.2s ease-out;
+}
+
+html[style*="dark"] {
+  --color-divide: #ffffff10;
+}
+
+@variant dark {
+  html[style*="dark"] & {
+    @slot;
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes reveal {
+  0% {
+    clip-path: circle(0% at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  70% {
+    clip-path: circle(70% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(100% at 50% 50%);
+  }
+}
+
+@keyframes unreveal {
+  0% {
+    clip-path: circle(100% at 50% 50%);
+  }
+  50% {
+    clip-path: circle(50% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(0% at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}
+
+@keyframes bottom-sheet-appear {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bottom-sheet-disappear {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes jump-from-bottom {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes list-item-appear {
+  0% {
+    margin-top: 0;
+    height: 0;
+  }
+  100% {
+    margin-top: 1;
+    height: var(--target-height, auto);
+  }
+}
+
+textarea {
+  form-sizing: normal;
+  field-sizing: content;
+}
