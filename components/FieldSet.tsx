@@ -13,19 +13,28 @@ export function FieldSet({
   footer?: ReactNode;
   dynamic?: boolean;
 }) {
-  const Body = dynamic ? AnimatedHeight : "div";
   return (
     <div>
       {!!title && <legend className={tw("text-hint mx-4 mb-1 text-xs font-extralight")}>{title}</legend>}
-      <Body
-        className={tw(
-          "bg-secondary-bg grid rounded-2xl shadow contain-style",
-          "divide-divide divide-y",
-          "*:first:rounded-t-2xl *:last:rounded-b-2xl",
-        )}
-      >
-        {children}
-      </Body>
+      {dynamic ? (
+        <div className={tw("bg-secondary-bg rounded-2xl shadow-md contain-paint")}>
+          <AnimatedHeight
+            className={tw("grid", "divide-divide divide-y", "*:first:rounded-t-2xl *:last:rounded-b-2xl")}
+          >
+            {children}
+          </AnimatedHeight>
+        </div>
+      ) : (
+        <div
+          className={tw(
+            "bg-secondary-bg grid rounded-2xl shadow-md contain-paint",
+            "divide-divide divide-y",
+            "*:first:rounded-t-2xl *:last:rounded-b-2xl",
+          )}
+        >
+          {children}
+        </div>
+      )}
       {footer}
     </div>
   );
