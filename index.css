@@ -31,12 +31,53 @@
   --animate-list-item-appear: list-item-appear 0.2s ease-out;
 }
 
+:root {
+  @apply selection:bg-button selection:text-button-text caret-accent-text;
+}
+
 html[style*="dark"] {
   --color-divide: #ffffff10;
 }
 
+@utility break-anywhere {
+  overflow-wrap: anywhere;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @variant dark {
   html[style*="dark"] & {
+    @slot;
+  }
+}
+
+@variant focus-within {
+  &:not(:disabled):active,
+  &:focus-within {
+    @slot;
+  }
+}
+
+@variant focus-visible-only {
+  @supports selector(:active:not(:has(:active))) {
+    &:not(:disabled):active:not(:has(:active)) {
+      @slot;
+    }
+  }
+  &:focus-visible {
+    @slot;
+  }
+}
+
+@variant focus-visible {
+  &:not(:disabled):active,
+  &:focus-visible {
     @slot;
   }
 }
