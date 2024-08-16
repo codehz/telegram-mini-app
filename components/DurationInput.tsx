@@ -47,6 +47,17 @@ function Column({ max, defaultValue, setValue }: { max: number; defaultValue: nu
         className={tw("w-8 appearance-none self-stretch border-none pr-1 pl-2 text-right outline-none")}
         placeholder="0"
         size={0}
+        maxLength={2}
+        onBlur={(e) => {
+          const value = +e.currentTarget.value;
+          if (Number.isNaN(value)) {
+            e.currentTarget.value = "0";
+          } else if (value > max) {
+            e.currentTarget.value = max + "";
+          } else if (value < 0) {
+            e.currentTarget.value = "0";
+          }
+        }}
       />
       <NumberInput.Control className={tw("flex w-4 flex-col fill-none stroke-current stroke-2")}>
         <NumberInput.IncrementTrigger>
