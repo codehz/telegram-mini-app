@@ -17,6 +17,8 @@
   --color-button-text: var(--tg-theme-button-text-color, #ffffff);
   --color-destructive-text: var(--tg-theme-destructive-text-color, #ff3b30);
 
+  --spacing-safearea: calc(100vh - var(--tg-viewport-height, 100vh));
+
   --animate-appear: appear 0.2s ease-in-out;
   --animate-disappear: disappear 0.2s ease-in-out forwards;
   --animate-reveal: reveal 0.3s cubic-bezier(0.35, 1, 1, 0.25);
@@ -48,6 +50,12 @@ html[style*="dark"] {
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@variant pointer-coarse {
+  @media (pointer:coarse) {
+    @slot;
   }
 }
 
