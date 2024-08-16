@@ -1,3 +1,6 @@
+import { useViewportBottom, useViewportHeight } from "+hooks/useViewport";
+import { useVisualViewportBottom, useVisualViewportHeight } from "+hooks/useVisualViewport";
+import { groupBy } from "+utils/groupBy";
 import { tw } from "bun-tailwindcss" with { type: "macro" };
 import classNames from "classnames";
 import { nanoid } from "nanoid";
@@ -11,13 +14,13 @@ import {
   useRef,
   useState,
   type AnimationEvent,
+  type ComponentProps,
   type DependencyList,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
 } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { groupBy } from "+utils/groupBy";
 
 type PageOptions = ({ type: "page"; x: number; y: number } | { type: "bottom-sheet" }) & {
   fallback?: ReactNode;
@@ -95,6 +98,16 @@ export function StackNavigator({ children }: { children: ReactNode }) {
   );
   useEffect(() => {
     Telegram.WebApp.BackButton.onClick(backHandler);
+    Telegram.WebApp.expand();
+    Telegram.WebApp.disableVerticalSwipes();
+    window.addEventListener(
+      "scroll",
+      (e) => {
+        e.preventDefault();
+        document.documentElement.scrollTop = 0;
+      },
+      { passive: false },
+    );
     return () => void Telegram.WebApp.BackButton.offClick(backHandler);
   }, []);
   useEffect(() => {
@@ -207,11 +220,10 @@ function PageRenderer({
             tw("from-bg fixed inset-0 bg-linear-to-b to-transparent to-[24px] backdrop-blur-md"),
             removed ? tw("animate-disappear") : tw("animate-appear"),
           )}
-          onClick={pageCtx.pop}
         >
           <div className={tw("bg-bg h-full w-full opacity-50")} />
         </div>
-        <div
+        <FixedBottom
           className={classNames(
             tw("fixed right-0 bottom-0 left-0 max-h-full overflow-y-auto"),
             removed ? tw("animate-bottom-sheet-disappear") : tw("animate-bottom-sheet-appear"),
@@ -220,8 +232,25 @@ function PageRenderer({
           onAnimationEnd={onAnimationEnd}
         >
           <PageContext.Provider value={pageCtx}>{page.node}</PageContext.Provider>
-        </div>
+        </FixedBottom>
       </>
     );
   }
+}
+
+function FixedBottom(props: Omit<ComponentProps<"div">, "style">) {
+  const height = useViewportHeight();
+  const bottom = useViewportBottom();
+  const visualHeight = useVisualViewportHeight();
+  const visualBottom = useVisualViewportBottom();
+  return (
+    <div
+      {...props}
+      style={
+        bottom != 0 && visualBottom === 0
+          ? { maxHeight: visualHeight, bottom: 0, paddingBottom: bottom }
+          : { maxHeight: height, bottom }
+      }
+    />
+  );
 }
