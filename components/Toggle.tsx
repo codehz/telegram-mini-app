@@ -1,15 +1,37 @@
 import { makeClass, tw } from "bun-tailwindcss" with { type: "macro" };
-import { memo, type ComponentPropsWithoutRef } from "react";
+import { memo, useEffect, useRef, type ComponentPropsWithoutRef, type ElementRef } from "react";
 
 export const Toggle = memo(function Toggle({
+  name,
   label,
+  type = "checkbox",
   ...rest
 }: {
+  name?: string;
   label?: string;
+  type?: "checkbox" | "radio";
 } & Omit<ComponentPropsWithoutRef<"input">, "className" | "type">) {
+  const ref = useRef<ElementRef<"input">>(null);
+  if (type === "checkbox")
+    useEffect(() => {
+      const form = ref.current!.form;
+      if (form && name) {
+        const controller = new AbortController();
+        form.addEventListener(
+          "formdata",
+          (e) => {
+            if (!e.formData.get(name)) {
+              e.formData.append(name, "off");
+            }
+          },
+          { signal: controller.signal },
+        );
+        return () => controller.abort();
+      }
+    }, [name]);
   const core = (
     <div className={tw("relative my-2 cursor-pointer")}>
-      <input className={tw("peer sr-only")} type="checkbox" {...rest} />
+      <input ref={ref} className={tw("peer sr-only")} type={type} name={name} {...rest} />
       <div
         className={makeClass(
           "toggle",
