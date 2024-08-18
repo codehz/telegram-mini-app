@@ -1,4 +1,4 @@
-import { useViewportBottom, useViewportHeight } from "+hooks/useViewport";
+import { useViewportStableBottom, useViewportStableHeight } from "+hooks/useViewport";
 import { useVisualViewportBottom, useVisualViewportHeight } from "+hooks/useVisualViewport";
 import { groupBy } from "+utils/groupBy";
 import { tw } from "bun-tailwindcss" with { type: "macro" };
@@ -239,8 +239,8 @@ function PageRenderer({
 }
 
 function FixedBottom(props: Omit<ComponentProps<"div">, "style">) {
-  const height = useViewportHeight();
-  const bottom = useViewportBottom();
+  const height = useViewportStableHeight();
+  const bottom = useViewportStableBottom();
   const visualHeight = useVisualViewportHeight();
   const visualBottom = useVisualViewportBottom();
   return (
