@@ -18,6 +18,7 @@
   --color-destructive-text: var(--tg-theme-destructive-text-color, #ff3b30);
 
   --spacing-safearea: calc(100vh - var(--tg-viewport-height, 100vh));
+  --spacing-18: 4.5rem;
 
   --animate-appear: appear 0.2s ease-in-out;
   --animate-disappear: disappear 0.2s ease-in-out forwards;
@@ -53,8 +54,39 @@ html[style*="dark"] {
   }
 }
 
+@utility image-pixelated {
+  image-rendering: pixelated;
+}
+
+@utility image-optimize-contrast {
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+}
+
+@utility image-smooth {
+  image-rendering: auto;
+  image-rendering: high-quality;
+  image-rendering: smooth;
+}
+
+@utility auto-visibility {
+  content-visibility: auto;
+}
+
+@utility pointer-events-children {
+  pointer-events: none;
+  :where(& > *) {
+    pointer-events: auto;
+  }
+}
+
+@utility ellipsis {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
 @variant pointer-coarse {
-  @media (pointer:coarse) {
+  @media (pointer: coarse) {
     @slot;
   }
 }
@@ -86,6 +118,12 @@ html[style*="dark"] {
 @variant focus-visible {
   &:not(:disabled):active,
   &:focus-visible {
+    @slot;
+  }
+}
+
+@variant inert-only {
+  &:is([inert]) {
     @slot;
   }
 }
