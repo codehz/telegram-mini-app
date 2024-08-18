@@ -19,6 +19,10 @@ function getViewportStableHeight() {
   return Telegram.WebApp.viewportStableHeight;
 }
 
+function getViewportStableBottom() {
+  return window.innerHeight - Telegram.WebApp.viewportStableHeight;
+}
+
 function getHeightServerSnapshot() {
   return Number.MAX_SAFE_INTEGER;
 }
@@ -37,4 +41,8 @@ export function useViewportBottom() {
 
 export function useViewportStableHeight() {
   return useSyncExternalStore(subscribeViewportHeightChange, getViewportStableHeight, getHeightServerSnapshot);
+}
+
+export function useViewportStableBottom() {
+  return useSyncExternalStore(subscribeViewportHeightChange, getViewportStableBottom, getBottomServerSnapshot);
 }
