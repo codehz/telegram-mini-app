@@ -13,8 +13,8 @@ export function DurationInput({
   const [second, setSecond] = useState(value % 60);
   const computedValue = useMemo(() => hour * 60 * 60 + minute * 60 + second, [hour, minute, second]);
   return (
-    <div className={tw("flex h-11 items-center px-4")}>
-      <div className={tw("grow")}>{label}</div>
+    <div className={tw("flex items-center px-4")}>
+      <div className={tw("flex h-11 grow items-center")}>{label}</div>
       <input {...rest} value={computedValue} readOnly type="hidden" />
       <Column max={23} defaultValue={hour} setValue={setHour} />
       <div>时</div>
@@ -40,7 +40,7 @@ function Column({ max, defaultValue, setValue }: { max: number; defaultValue: nu
       max={max}
       defaultValue={defaultValue + ""}
       allowMouseWheel
-      className={tw("mr-1 flex items-center tabular-nums")}
+      className={tw("mr-1 flex h-11 items-center tabular-nums")}
       onValueChange={(e) => setText(e.value)}
     >
       <NumberInput.Input
