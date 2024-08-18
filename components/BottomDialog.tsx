@@ -8,8 +8,9 @@ import { useNavigatePop } from "./StackNavigator";
 const ButtonClass = makeClass(
   "BottomDialog-button",
   "flex h-11 items-center justify-center gap-2 !outline-none transition-colors",
-  "focus-visible:text-bg",
-  "not-[data-destructive]:text-accent-text not-[data-destructive]:focus-visible:bg-accent-text",
+  "auto-visibility",
+  "focus-visible:text-button-text",
+  "not-[data-destructive]:text-button not-[data-destructive]:focus-visible:bg-button",
   "[data-destructive]:text-destructive-text [data-destructive]:focus-visible:bg-destructive-text",
 );
 
@@ -26,16 +27,16 @@ export function BottomDialog({
   children: ReactNode;
   dynamic?: boolean;
   close?: ReactNode;
-  onSubmit?: (event: FormEvent<ElementRef<"form">>) => unknown;
+  onSubmit?: (data: FormData) => unknown;
 }) {
   const pop = useNavigatePop();
   const lock = useRef(false);
   const handleSubmit = useEventHandler(async (event: FormEvent<ElementRef<"form">>) => {
     event.preventDefault();
-    if (!onSubmit || (await onSubmit(event))) pop();
+    if (!onSubmit || (await onSubmit(new FormData(event.currentTarget)))) pop();
   });
   return (
-    <form className={tw("grid gap-4 p-4")} onSubmit={handleSubmit}>
+    <form className={tw("my-4 grid gap-4 px-4")} onSubmit={handleSubmit}>
       <FieldSet dynamic={dynamic}>
         <div className={tw("space-y-1 py-3 px-2 text-center text-sm")}>
           <h1 className={tw("font-bold")}>{title}</h1>
@@ -78,7 +79,7 @@ export function BottomDialog({
       <FieldSet>
         <button
           className={tw(
-            "text-accent-text focus-visible:bg-button focus-visible:text-bg flex h-11 items-center justify-center gap-2 rounded-2xl font-bold !outline-none transition-colors",
+            "text-button focus-visible:bg-button focus-visible:text-button-text flex h-11 items-center justify-center gap-2 rounded-2xl font-bold !outline-none transition-colors",
           )}
           onClick={pop}
         >
