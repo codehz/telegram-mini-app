@@ -1,3 +1,4 @@
+import { AnimatedSuspense } from "+components/AnimatedSuspense";
 import { useViewportStableBottom, useViewportStableHeight } from "+hooks/useViewport";
 import { useVisualViewportBottom, useVisualViewportHeight } from "+hooks/useVisualViewport";
 import { groupBy } from "+utils/groupBy";
@@ -6,7 +7,6 @@ import classNames from "classnames";
 import { nanoid } from "nanoid";
 import {
   createContext,
-  Suspense,
   useCallback,
   useContext,
   useEffect,
@@ -118,18 +118,12 @@ export function StackNavigator({ children }: { children: ReactNode }) {
     }
   }, [pages]);
   const [pushed, poped] = groupBy(ops, (op) => "push" in op);
-  const renderered = pages.toReversed().map((page, i) => (
-    <Suspense key={page.id} fallback={page.options?.fallback}>
+  const renderered = pages
+    .toReversed()
+    .map((page, i) => (
       <PageRenderer page={page} setPages={setPages} setOps={setOps} removed={poped.some((op) => op.pop === page.id)} />
-    </Suspense>
-  ));
-  renderered.push(
-    ...pushed.map((op) => (
-      <Suspense key={op.push.id} fallback={op.push.options?.fallback}>
-        <PageRenderer page={op.push} setOps={setOps} setPages={setPages} />
-      </Suspense>
-    )),
-  );
+    ));
+  renderered.push(...pushed.map((op) => <PageRenderer page={op.push} setOps={setOps} setPages={setPages} />));
   return (
     <StackContext.Provider value={push}>
       <slot inert={!!renderered.length}>{children}</slot>
@@ -197,15 +191,18 @@ function PageRenderer({
       <>
         {removed && <div className={tw("bg-bg animate-unreveal-backdrop fixed inset-0")} />}
         <div
+          inert={removed}
           className={classNames(
-            tw("bg-bg fixed inset-0 isolate"),
+            tw("bg-bg fixed inset-0 isolate contain-strict"),
             removed ? tw("animate-unreveal") : tw("animate-reveal"),
           )}
           onAnimationStart={onAnimationStart}
           onAnimationEnd={onAnimationEnd}
           style={{ "--reveal-x": page.options.x + "px", "--reveal-y": page.options.y + "px" }}
         >
-          <PageContext.Provider value={pageCtx}>{page.node}</PageContext.Provider>
+          <AnimatedSuspense fallback={page.options.fallback ?? <AnimatedSuspense.DefaultLoading solid />}>
+            <PageContext.Provider value={pageCtx}>{page.node}</PageContext.Provider>
+          </AnimatedSuspense>
           {animated && !removed && (
             <div className={tw("bg-accent-text animate-reveal-mask pointer-events-none absolute inset-0")} />
           )}
@@ -214,26 +211,29 @@ function PageRenderer({
     );
   else if (page.options.type === "bottom-sheet") {
     return (
-      <>
+      <div className={tw("fixed inset-0 contain-strict")}>
         <div
           className={classNames(
             tw("from-bg fixed inset-0 bg-linear-to-b to-transparent to-[24px] backdrop-blur-md"),
             removed ? tw("animate-disappear") : tw("animate-appear"),
           )}
+          onClick={pageCtx.pop}
         >
           <div className={tw("bg-bg h-full w-full opacity-50")} />
         </div>
-        <FixedBottom
-          className={classNames(
-            tw("fixed right-0 bottom-0 left-0 max-h-full overflow-y-auto"),
-            removed ? tw("animate-bottom-sheet-disappear") : tw("animate-bottom-sheet-appear"),
-          )}
-          onAnimationStart={onAnimationStart}
-          onAnimationEnd={onAnimationEnd}
-        >
-          <PageContext.Provider value={pageCtx}>{page.node}</PageContext.Provider>
-        </FixedBottom>
-      </>
+        <AnimatedSuspense fallback={page.options.fallback ?? <AnimatedSuspense.DefaultLoading />}>
+          <FixedBottom
+            className={classNames(
+              tw("fixed right-0 bottom-0 left-0 z-1 max-h-full overflow-y-auto will-change-auto"),
+              removed ? tw("animate-bottom-sheet-disappear") : tw("animate-bottom-sheet-appear"),
+            )}
+            onAnimationStart={onAnimationStart}
+            onAnimationEnd={onAnimationEnd}
+          >
+            <PageContext.Provider value={pageCtx}>{page.node}</PageContext.Provider>
+          </FixedBottom>
+        </AnimatedSuspense>
+      </div>
     );
   }
 }
