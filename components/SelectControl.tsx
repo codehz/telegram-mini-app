@@ -15,7 +15,7 @@ const positioning = {
   boundary,
 };
 
-export function SelectControl({
+export function SelectControl<T extends string = string>({
   name,
   label,
   placeholder,
@@ -25,26 +25,26 @@ export function SelectControl({
   disabled = false,
   value,
   onValueChange,
+  items = Children.map(children, (item) => {
+    if (isSelectControlItem(item)) {
+      return item.props;
+    }
+    return null;
+  }) ?? [],
 }: {
   name?: string;
   label: string;
   placeholder: string;
   clear?: string;
-  children: ReactNode;
+  children?: ReactNode;
   required?: boolean;
   disabled?: boolean;
-  value?: string;
-  onValueChange?: (value: string) => void;
+  value?: T;
+  onValueChange?: (value: T) => void;
+  items?: ButtonDialogItemProps[];
 }) {
-  const items =
-    Children.map(children, (item) => {
-      if (isSelectControlItem(item)) {
-        return item.props;
-      }
-      return null;
-    }) ?? [];
   const handleValueChange = onValueChange
-    ? useEventHandler((e: { value: string[] }) => onValueChange(e.value[0] ?? ""))
+    ? useEventHandler((e: { value: string[] }) => onValueChange((e.value[0] ?? "") as T))
     : undefined;
   return (
     <Select.Root
