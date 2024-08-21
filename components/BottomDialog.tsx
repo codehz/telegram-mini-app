@@ -10,8 +10,8 @@ const ButtonClass = makeClass(
   "flex h-11 items-center justify-center gap-2 !outline-none transition-colors",
   "auto-visibility",
   "focus-visible:text-button-text",
-  "not-[data-destructive]:text-button not-[data-destructive]:focus-visible:bg-button",
-  "[data-destructive]:text-destructive-text [data-destructive]:focus-visible:bg-destructive-text",
+  "not-data-[destructive]:text-button not-data-[destructive]:focus-visible:bg-button",
+  "data-[destructive]:text-destructive-text data-[destructive]:focus-visible:bg-destructive-text",
 );
 
 export function BottomDialog({
