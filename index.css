@@ -18,6 +18,7 @@
   --color-destructive-text: var(--tg-theme-destructive-text-color, #ff3b30);
 
   --spacing-safearea: calc(100vh - var(--tg-viewport-height, 100vh));
+  --spacing-viewport: var(--tg-viewport-height, 100vh);
   --spacing-18: 4.5rem;
 
   --animate-appear: appear 0.2s ease-in-out;
@@ -79,10 +80,6 @@ html[style*="dark"] {
   :where(& > *) {
     pointer-events: auto;
   }
-}
-
-@utility ellipsis {
-  @apply overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 @variant pointer-coarse {

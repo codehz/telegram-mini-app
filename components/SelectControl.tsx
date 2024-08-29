@@ -74,8 +74,8 @@ export function SelectControl<T extends string = string>({
           >
             {label}
           </Select.Label>
-          <div className={tw("flex grow items-center justify-end")}>
-            <Select.ValueText placeholder={placeholder} className={tw("ellipsis mr-2 text-right text-sm")} />
+          <div className={tw("pointer-events-none flex grow items-center justify-end")}>
+            <Select.ValueText placeholder={placeholder} className={tw("mr-2 truncate text-right text-sm")} />
             <Select.Indicator
               className={makeClass(
                 "SelectIndicator",
