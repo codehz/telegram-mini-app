@@ -1,9 +1,13 @@
 import { toast } from "sonner";
 
-export async function asyncToast(fn: () => Promise<unknown>, ongoing: string, errmsg: string): Promise<boolean> {
+export async function asyncToast(
+  promise: Promise<unknown> | (() => Promise<unknown>),
+  ongoing: string,
+  errmsg: string,
+): Promise<boolean> {
   const id = toast.info(ongoing);
   try {
-    await fn();
+    await (typeof promise === "function" ? promise() : promise);
     return true;
   } catch (e) {
     toast.error(errmsg, { description: e + "" });
