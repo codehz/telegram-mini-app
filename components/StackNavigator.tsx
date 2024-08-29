@@ -104,6 +104,7 @@ export function StackNavigator({ children }: { children: ReactNode }) {
       "scroll",
       (e) => {
         e.preventDefault();
+        document.activeElement?.scrollIntoView({ behavior: "smooth", block: "nearest" });
         document.documentElement.scrollTop = 0;
       },
       { passive: false },
