@@ -8,7 +8,7 @@ function MyNumberInput({
   className,
   placeholder,
   ...props
-}: { label: string; placeholder?: string } & ComponentProps<typeof NumberInput.Root>) {
+}: { label?: string; placeholder?: string } & ComponentProps<typeof NumberInput.Root>) {
   return (
     <NumberInput.Root {...props} className={classNames(tw("flex items-center pr-4"), className)}>
       <NumberInput.Label className={tw("py-2 pl-4 text-sm")}>{label}</NumberInput.Label>
